@@ -39,6 +39,10 @@ def gameLoop():
     randAppleX = random.randrange(0, display_width - block_size)
     randAppleY = random.randrange(0, display_height - block_size)
 
+    # to make the apple location a multiple of 10 to line up correctly
+    roundX = round(randAppleX / 10.0) * 10.0
+    roundY = round(randAppleY / 10.0) * 10.0
+
     while not gameExit:
 
         while gameOver == True:
@@ -77,15 +81,18 @@ def gameLoop():
         lead_x += lead_x_change
         lead_y += lead_y_change
         gameDisplay.fill(white)
-        pygame.draw.rect(gameDisplay, red, [randAppleX, randAppleY, block_size, block_size])
+        pygame.draw.rect(gameDisplay, red, [roundX, roundY, block_size, block_size])
         pygame.draw.rect(gameDisplay, black, [lead_x, lead_y, block_size, block_size])
         pygame.display.update()
+
+        if lead_x == roundX and lead_y == roundY:
+            print("om nom nom")
 
         clock.tick(FPS)
 
     message_to_screen("Have a wonderful day!", red)
     pygame.display.update()
-    time.sleep(3)  # not going to keep this here
+    time.sleep(2)  # not going to keep this here
     pygame.quit()
     quit()
 
