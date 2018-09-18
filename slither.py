@@ -1,4 +1,5 @@
 import pygame
+import time
 
 pygame.init()
 
@@ -8,11 +9,6 @@ red = (255, 0, 0)
 
 display_width = 800
 display_height = 600
-
-clock = pygame.time.Clock()
-
-block_size = 10
-FPS = 30
 
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Slither')
@@ -24,6 +20,18 @@ lead_y = display_height / 2
 
 lead_x_change = 0
 lead_y_change = 0
+
+clock = pygame.time.Clock()
+
+block_size = 10
+FPS = 30
+
+font = pygame.font.SysFont(None, 25)
+
+def message_to_screen(msg, color):
+    screen_text = font.render(msg, True, color)
+    gameDisplay.blit(screen_text, [display_width / 2 - 200, display_height / 2])
+
 
 while not gameExit:
     for event in pygame.event.get():
@@ -54,6 +62,8 @@ while not gameExit:
 
     clock.tick(FPS)
 
-
+message_to_screen("You lost.  You should give up and play something else.", red)
+pygame.display.update()
+time.sleep(3)  # not going to keep this here
 pygame.quit()
 quit()
