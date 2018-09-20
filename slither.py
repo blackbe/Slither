@@ -179,7 +179,6 @@ def gameLoop():
         lead_y += lead_y_change
         gameDisplay.fill(white)
         appleThickness = 30
-        #pygame.draw.rect(gameDisplay, red, [roundX, roundY, appleThickness, appleThickness])
         gameDisplay.blit(appleimg, (roundX, roundY))
 
         snakeHead = []
