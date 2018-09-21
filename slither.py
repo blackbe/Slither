@@ -25,7 +25,7 @@ appleimg = pygame.image.load('apple.png')
 clock = pygame.time.Clock()
 
 block_size = 20
-FPS = 15
+FPS = 5
 
 direction = "right"
 
