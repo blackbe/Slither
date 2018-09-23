@@ -24,14 +24,25 @@ appleimg = pygame.image.load('apple.png')
 
 clock = pygame.time.Clock()
 
+appleThickness = 30
 block_size = 20
-FPS = 5
+FPS = 15
 
 direction = "right"
 
 smallfont = pygame.font.SysFont("comicsansms", 25)
 medfont = pygame.font.SysFont("comicsansms", 50)
 largefont = pygame.font.SysFont("comicsansms", 80)
+
+def randAppleGen():
+    randAppleX = random.randrange(0, display_width - appleThickness)
+    randAppleY = random.randrange(0, display_height - appleThickness)
+
+    # to make the apple location line up correctly
+    roundX = round(randAppleX)
+    roundY = round(randAppleY)
+
+    return roundX, roundY
 
 
 def game_intro():
@@ -121,12 +132,7 @@ def gameLoop():
     snakeList = []
     snakeLength = 1
 
-    randAppleX = random.randrange(0, display_width - block_size)
-    randAppleY = random.randrange(0, display_height - block_size)
-
-    # makes the apple position line up correctly
-    roundX = round(randAppleX)
-    roundY = round(randAppleY)
+    roundX, roundY = randAppleGen()
 
     while not gameExit:
 
@@ -181,7 +187,6 @@ def gameLoop():
         lead_x += lead_x_change
         lead_y += lead_y_change
         gameDisplay.fill(white)
-        appleThickness = 30
         gameDisplay.blit(appleimg, (roundX, roundY))
 
         snakeHead = []
@@ -201,20 +206,10 @@ def gameLoop():
 
         if lead_x > roundX and lead_x < roundX + appleThickness or lead_x + block_size > roundX and lead_x + block_size < roundX + appleThickness:
             if lead_y > roundY and lead_y < roundY + appleThickness:
-                randAppleX = random.randrange(0, display_width - block_size)
-                randAppleY = random.randrange(0, display_height - block_size)
-
-                # to make the apple location  line up correctly
-                roundX = round(randAppleX)
-                roundY = round(randAppleY)
+                roundX, roundY = randAppleGen()
                 snakeLength += 1
             elif lead_y + block_size > roundY and lead_y + block_size < roundY + appleThickness:
-                randAppleX = random.randrange(0, display_width - block_size)
-                randAppleY = random.randrange(0, display_height - block_size)
-
-                # to make the apple location line up correctly
-                roundX = round(randAppleX)
-                roundY = round(randAppleY)
+                roundX, roundY = randAppleGen()
                 snakeLength += 1
 
         clock.tick(FPS)
