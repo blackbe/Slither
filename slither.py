@@ -26,13 +26,59 @@ clock = pygame.time.Clock()
 
 appleThickness = 30
 block_size = 20
-FPS = 15
+FPS = 5
 
 direction = "right"
 
 smallfont = pygame.font.SysFont("comicsansms", 25)
 medfont = pygame.font.SysFont("comicsansms", 50)
 largefont = pygame.font.SysFont("comicsansms", 80)
+
+def pause():
+    paused = True
+
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quitScreen()
+                pygame.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_c:
+                    paused = False
+                elif event.key == pygame.K_q:
+                    quitScreen()
+                    pygame.quit()
+                    quit()
+
+        gameDisplay.fill(white)
+        message_to_screen("Paused",
+                          black,
+                          -100,
+                          size="large")
+        message_to_screen("Press C to continue or Q to quit.",
+                          black,
+                          25)
+        pygame.display.update()
+        clock.tick(5)
+
+
+
+def quitScreen():
+    gameDisplay.fill(white)
+    message_to_screen("Have a wonderful day!",
+                      green,
+                      size="medium")
+    pygame.display.update()
+    time.sleep(2)  # not going to keep this here
+    return
+
+
+def score(score):
+    text = smallfont.render("Score: " + str(score), True, black)
+    gameDisplay.blit(text, [0, 0])
+
 
 def randAppleGen():
     randAppleX = random.randrange(0, display_width - appleThickness)
@@ -51,6 +97,7 @@ def game_intro():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                quitScreen()
                 pygame.quit()
                 quit()
 
@@ -58,6 +105,7 @@ def game_intro():
                 if event.key ==pygame.K_c:
                     intro = False
                 if event.key == pygame.K_q:
+                    quitScreen()
                     pygame.quit()
                     quit()
         gameDisplay.fill(white)
@@ -74,7 +122,7 @@ def game_intro():
         message_to_screen("If you run into yourself or the edges, you die",
                           black,
                           50)
-        message_to_screen("Press C to play or Q to quit",
+        message_to_screen("Press C to play, P to pause, or Q to quit",
                           black,
                           180)
 
@@ -180,6 +228,8 @@ def gameLoop():
                     direction = "down"
                     lead_x_change = 0
                     lead_y_change = block_size
+                elif event.key == pygame.K_p:
+                    pause()
 
         if lead_x >= display_width or lead_x < 0 or lead_y >= display_height or lead_y < 0:
             gameOver = True
@@ -202,6 +252,7 @@ def gameLoop():
                 gameOver = True
 
         snake(block_size, snakeList)
+        score(snakeLength - 1)
         pygame.display.update()
 
         if lead_x > roundX and lead_x < roundX + appleThickness or lead_x + block_size > roundX and lead_x + block_size < roundX + appleThickness:
@@ -214,11 +265,7 @@ def gameLoop():
 
         clock.tick(FPS)
 
-    message_to_screen("Have a wonderful day!",
-                      green,
-                      size="medium")
-    pygame.display.update()
-    time.sleep(2)  # not going to keep this here
+    quitScreen()
     pygame.quit()
     quit()
 
