@@ -1,6 +1,9 @@
 import pygame
 import time
 import random
+import os
+import sys
+
 
 pygame.init()
 
@@ -15,11 +18,24 @@ display_height = 600
 gameDisplay = pygame.display.set_mode((display_width, display_height))
 pygame.display.set_caption('Slither')
 
-icon = pygame.image.load('icon.png')  # should be 32 by 32
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+
+
+icon = pygame.image.load(resource_path("icon.png"))  # should be 32 by 32
 pygame.display.set_icon(icon)
 
-img = pygame.image.load('snakehead.png')
-appleimg = pygame.image.load('apple.png')
+
+img = pygame.image.load(resource_path("snakehead.png"))
+appleimg = pygame.image.load(resource_path("apple.png"))
 
 
 clock = pygame.time.Clock()
@@ -34,6 +50,9 @@ direction = "right"
 smallfont = pygame.font.SysFont("comicsansms", 25)
 medfont = pygame.font.SysFont("comicsansms", 50)
 largefont = pygame.font.SysFont("comicsansms", 80)
+
+
+
 
 def pause():
     paused = True
